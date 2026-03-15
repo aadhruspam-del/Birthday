@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Birthday Surprise</title>
+
+<style>
+
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+font-family:Arial;
+background:black;
+color:white;
+text-align:center;
+overflow:hidden;
+}
+
+/* text above sparkles */
+
+#title,#message,#cake,#countdown,button,h2{
+position:relative;
+z-index:2;
+}
+
+button{
+padding:18px 40px;
+font-size:22px;
+border:none;
+border-radius:10px;
+background:#ff007f;
+color:white;
+cursor:pointer;
+}
+
+#countdown{
+font-size:90px;
+display:none;
+}
+
+h1{
+font-size:65px;
+display:none;
+animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+from{ text-shadow:0 0 10px white;}
+to{ text-shadow:0 0 40px gold;}
+}
+
+.cake{
+font-size:120px;
+display:none;
+animation:bounce 2s infinite;
+}
+
+@keyframes bounce{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-20px);}
+}
+
+.balloon{
+position:fixed;
+font-size:40px;
+animation:float linear infinite;
+z-index:1;
+}
+
+@keyframes float{
+0%{transform:translateY(110vh);}
+100%{transform:translateY(-10vh);}
+}
+
+.confetti{
+position:fixed;
+width:10px;
+height:10px;
+top:-10px;
+animation:fall linear forwards;
+z-index:1;
+}
+
+@keyframes fall{
+to{transform:translateY(100vh) rotate(360deg);}
+}
+
+.firework{
+position:fixed;
+width:6px;
+height:6px;
+background:white;
+border-radius:50%;
+animation:explode 1s linear infinite;
+z-index:1;
+}
+
+@keyframes explode{
+0%{transform:translate(0,0);}
+100%{transform:translate(var(--x),var(--y));opacity:0;}
+}
+
+/* sparkles */
+
+.sparkle{
+position:fixed;
+width:4px;
+height:4px;
+background:white;
+border-radius:50%;
+opacity:0.3;
+animation:twinkle 3s infinite alternate;
+pointer-events:none;
+z-index:0;
+}
+
+@keyframes twinkle{
+0%{opacity:0.1; transform:scale(0.8);}
+100%{opacity:0.6; transform:scale(1.4);}
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>🎁 A Surprise for <span id="name">Asii</span></h2>
+
+<button onclick="openSurprise()">Open Surprise 🎉</button>
+
+<div id="countdown">3</div>
+
+<h1 id="title">🎉 Happy Birthday <span id="name2">Asii</span> 🎂</h1>
+
+<div class="cake" id="cake">🎂</div>
+
+<div id="message"></div>
+
+<audio id="music">
+<source src="mybdaysong.mp3.mp3" type="audio/mp3">
+</audio>
+
+<script>
+
+let friendName="Asii";
+
+document.getElementById("name").innerText=friendName;
+document.getElementById("name2").innerText=friendName;
+
+createSparkles();
+
+function openSurprise(){
+
+document.getElementById("message").innerHTML="";
+
+document.getElementById("title").style.display="none";
+document.getElementById("cake").style.display="none";
+
+document.getElementById("countdown").style.display="block";
+
+let count=3;
+
+document.getElementById("countdown").innerHTML=count;
+
+let countdown=setInterval(()=>{
+
+count--;
+
+if(count>0){
+
+document.getElementById("countdown").innerHTML=count;
+
+}else{
+
+clearInterval(countdown);
+
+document.getElementById("countdown").style.display="none";
+
+document.getElementById("title").style.display="block";
+
+document.getElementById("cake").style.display="block";
+
+startParty();
+
+}
+
+},1000);
+
+}
+
+function startParty(){
+
+let music=document.getElementById("music");
+
+music.currentTime=0;
+music.play();
+
+let text="sugalle? I know we don’t talk anymore, and I’m keeping the promise I made to not disturb you unless you want to talk. But today felt too special to pass without quietly wishing you. Truly hope life is treating you kindly, that you’re smiling more, and that everything you’re working toward finds its way to you.BTW sorry for this awkward song. A reply would be nice . We'll talk when you want to. Hope you remember my number hehee🎂✨";
+
+let i=0;
+
+function type(){
+
+if(i<text.length){
+
+document.getElementById("message").innerHTML+=text.charAt(i);
+
+i++;
+
+setTimeout(type,40);
+
+}
+
+}
+
+type();
+
+createBalloons();
+createConfetti();
+createFireworks();
+
+}
+
+function createBalloons(){
+
+for(let i=0;i<30;i++){
+
+let b=document.createElement("div");
+
+b.className="balloon";
+
+b.innerHTML="🎈";
+
+b.style.left=Math.random()*100+"vw";
+
+b.style.animationDuration=(Math.random()*4+4)+"s";
+
+document.body.appendChild(b);
+
+}
+
+}
+
+function createConfetti(){
+
+for(let i=0;i<200;i++){
+
+let confetti=document.createElement("div");
+
+confetti.className="confetti";
+
+confetti.style.left=Math.random()*100+"vw";
+
+confetti.style.backgroundColor=
+"rgb("+Math.random()*255+","+Math.random()*255+","+Math.random()*255+")";
+
+confetti.style.animationDuration=(Math.random()*3+2)+"s";
+
+document.body.appendChild(confetti);
+
+}
+
+}
+
+function createFireworks(){
+
+for(let i=0;i<120;i++){
+
+let f=document.createElement("div");
+
+f.className="firework";
+
+f.style.left=Math.random()*100+"vw";
+f.style.top=Math.random()*100+"vh";
+
+f.style.setProperty("--x",(Math.random()*200-100)+"px");
+f.style.setProperty("--y",(Math.random()*200-100)+"px");
+
+document.body.appendChild(f);
+
+}
+
+}
+
+function createSparkles(){
+
+for(let i=0;i<120;i++){
+
+let s=document.createElement("div");
+
+s.className="sparkle";
+
+s.style.left=Math.random()*100+"vw";
+s.style.top=Math.random()*100+"vh";
+
+s.style.animationDuration=(Math.random()*3+2)+"s";
+
+document.body.appendChild(s);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
+```
